@@ -69,3 +69,21 @@ SELECT ename, sal*12 AS 연봉
 FROM emp
 WHERE sal*12 >=36000; -- 연봉은 월급x12개월이므로 곱하기 연산자 *를 사용한다. 
 -- 실행 순서는 where 절이 select 절에 앞서므로 sal*12 대신 '연봉'을 지정하면 오류
+
+
+--010. 비교연산자 1 ' 같지 않다'
+
+-- 직책이 MANAGER이 아닌 모든 사원의 이름과 부서번호, 직책을 출력하라. 
+
+SELECT ename,deptno, job 
+FROM emp
+WHERE job^= 'SALESMAN'; -- '같지 않다' 역할을 하는 연산자 사용. 
+
+
+--011. 비교연산자 2 'between ... and ...'
+
+-- 월급이 500 이상 1500 이하인 사원의 사번, 이름과 연봉을 출력하라. 
+
+SELECT empno, ename, sal
+FROM emp
+WHERE sal BETWEEN 500 AND 1500; -- 조건절에 between and 구문을 사용해 범위를 지정한다. 
