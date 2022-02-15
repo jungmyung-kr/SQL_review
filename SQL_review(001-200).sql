@@ -249,10 +249,91 @@ DESC emp;를 통해 해당 컬럼의 데이터 유형을 확인해보면 숫자�
 */
 
 
---033. NULL 값 대신 다른 데이터 출력하기 (nvl)
+--033. NULL 값 대신 다른 데이터 출력하기 'nvl'
 --사원들의 이름과 커미션을 출력하되, 커미션이 NULL이면 no comm이 출력되게 하라. 
 
 SELECT ename, NVL(TO_CHAR(comm), 'no comm') -- comm 컬럼의 데이터 형은 숫자, 변환할 데이터 형은 문자이므로 TO_CHAR 명령어를 사용한다.
 FROM emp;
 
 
+--034. IF문 SQL로 구현하기 'decode'
+-- 사원의 이름과 부서번호, 보너스를 출력하라. 
+-- 보너스는 다음과 같다. 부서번호 10: 300 / 20: 400 / 나머지는 없음. 
+
+SELECT ename, deptno, decode(deptno,10,300,20,400,0) AS 보너스
+FROM emp;
+
+
+--035. IF문 SQL로 구현하기 'case'
+--직업이 SALESMAN,  ANALYST인 사원의 이름, 직업, 월급, 보너스를 출력하라.
+--단, 월급 3000 이상의 보너스는 500 / 2000 이상은 300 / 1000 이상은 200/ 그외 0 
+
+SELECT ename, job, sal, CASE WHEN sal>= 3000 THEN 500
+                                                     WHEN sal>= 2000 THEN 300
+                                                     WHEN sal>= 1000 THEN 200 ELSE 0 END AS 보너스
+FROM emp;
+--부등호 사용을 위해 DECODE가 아닌 CASE 사용
+
+
+--036. 최댓값 출력하기 'max'
+-- SALESMAN의 최대 월급을 출력하라. 
+
+SELECT MAX(sal)
+FROM emp
+WHERE job='SALESMAN';
+
+--추가. SALESMAN의 최대 월급과 직업명을 출력하라. 
+
+SELECT job, MAX(sal)
+FROM emp
+WHERE job='SALESMAN'
+GROUP BY job;  --조건절 이후에 group by로 job을 그룹핑해 코딩 오류 방지.
+
+
+--037. 최소값 출력하기 'min'
+-- 사원 테이블에서 부서 번호와 부서 번호 별 최소 월급을 출력하라. 
+
+SELECT deptno, MIN(sal)
+FROM emp
+GROUP BY deptno; -- emp 테이블에서 deptno 즉 부서번호별로 그룹핑을 한 후, 최소 월급을 출력하는 구조.
+
+--038. 평균값 출력하기 'avg'
+-- 사원테이블에서 직업, 직업별 평균 월급을 출력하되, 가장 높은 값부터 출력하라. 
+
+SELECT job, ROUND(AVG(sal))
+FROM emp
+GROUP BY job
+ORDER BY AVG(sal) DESC;
+
+
+--039. 토탈값 출력하기 'sum'
+--1981년에 입사한 사원들의 월급 총합을 구하라.
+
+SELECT SUM(sal)
+FROM emp
+WHERE TO_CHAR(hiredate,'YYYY') = '1981';
+
+
+--040. 건수 출력하기 'count'
+-- 직업과 직업별 인원 수를 출력하되, SALESMAN은 제외하라. 
+
+SELECT job, count(*) "인원 수"
+FROM emp
+WHERE job ^= 'SALESMAN'
+GROUP BY job;
+
+
+--041. 데이터 분석 함수로 순위 출력 'rank'
+-- 부서번호가 20인 사원들의 이름, 부서번호, 월급, 월급의 순위를 출력하라. 
+
+SELECT ename, deptno, sal, RANK() OVER (ORDER BY sal DESC) "월급의 순위"
+FROM emp
+WHERE deptno=20;
+
+
+--042. 데이터 분석 함수로 순위 출력 2 'dense_rank'
+--직업, 이름, 월급, 월급의 순위를 출력하되, 순위가 직업별로 각각 월급이 높은 사원 순으로 출력하라. 
+
+SELECT job, ename, sal, 
+               DENSE_RANK() OVER (PARTITION BY job ORDER BY sal DESC) "월급의 순위"
+FROM emp;
