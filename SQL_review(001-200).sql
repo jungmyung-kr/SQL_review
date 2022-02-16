@@ -337,3 +337,64 @@ WHERE deptno=20;
 SELECT job, ename, sal, 
                DENSE_RANK() OVER (PARTITION BY job ORDER BY sal DESC) "월급의 순위"
 FROM emp;
+
+--043. 데이터 분석 함수로 등급 출력하기 'ntile'
+--작성법: ntile (나눌 등급의 수) over ( order by 기준 컬럼 desc/asc)
+--이름, 입사일, 입사한 사원 순으로 등급을 나누는데 등급을 5등급으로 나눠서 출력하시오. 
+
+SELECT ename, hiredate, NTILE(5) OVER (ORDER BY hiredate ASC) 등급
+FROM emp;
+
+
+--044. 데이터 분석 함수로 순위 비율 출력하기 'cume_dist'
+-- 작성법: cume_dist () over (order by 기준 컬럼 desc/asc) 
+--부서번호, 이름과 월급과 월급의 순위에 대한 비율을 출력하세요. 순위 비율이 부서번호별로 각각 출력되게 하시오. 
+
+SELECT deptno, ename, sal, ROUND(CUME_DIST() OVER (PARTITION BY deptno ORDER BY sal DESC),2) 비율 
+FROM emp; -- 해당 함수는 group by가 아닌 partition by를 사용하여 부서번호별로 출력되게 설정함.
+
+
+--045. 데이터 분석 함수로 데이터를 가로로 출력하기 'listagg'
+-- 작성법: listagg(컬럼명,"붙일 구분자 또는 기호") within group (order by 기준 컬럼) / GROUP BY (그룹핑할 컬럼) 
+-- 직업, 직업별로 속한  사원들의 이름을 가로로 출력하는 데 가로로 출력될 때에 월급이 높은 사원부터 출력되게 하시오. 
+
+SELECT job, LISTAGG (ename, ',') WITHIN GROUP (ORDER BY sal DESC)
+FROM emp
+GROUP by job;
+
+
+--046. 데이터 분석 함수로 바로 전 행과 다음 행 출력하기 'lag', 'lead'
+-- 작성법: lag(컬럼명, 행번호) over (order by 기준 컬럼) / lead (컬럼명, 행번호) over ( order by sal 기준컬럼)
+-- 이름, 입사일, 바로 전에 입사한 사원과의 간격일을 출력하세요. 
+
+SELECT ename, hiredate, hiredate - LAG(hiredate,1) OVER (ORDER BY hiredate asc)"간격일"
+FROM emp;
+
+
+--047. ROW를 COLUMN으로 출력하기1  'sum+decode'
+-- 직업, 직업별 토탈 월급을 가로로 출력하라. 
+
+SELECT job,SUM(sal)
+FROM emp
+GROUP BY job;  --해당 쿼리문을 통해서 직업명을 먼저 조회해봄. 
+
+SELECT SUM(DECODE(job,'CLERK',sal,NULL)) as CLERK,
+               SUM(DECODE(job,'SALESMAN',sal,NULL)) as SALESMAN,
+               SUM(DECODE(job,'MANAGER',sal,NULL)) as MANAGER,
+               SUM(DECODE(job,'ANALYST',sal,NULL)) as ANALYST,
+               SUM(DECODE(job,'PRESIDENT',sal,NULL)) as PRESIDENT
+FROM emp;  --조회된 직업명을 바탕으로 SUM을 구하고, 컬럼명을 별칭으로 설정한다. 
+
+
+--048. ROW를 COLUMN으로 출력하기2
+
+--049. COLUMN을 ROW로 출력하기
+
+--050. 데이터 분석 함수로 누적 데이터 출력하기 
+
+
+
+
+
+
+
