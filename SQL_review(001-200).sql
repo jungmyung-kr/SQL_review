@@ -32,13 +32,14 @@ FROM emp; -- 테이블 명
 SELECT DISTINCT job -- 중복된 값을 제거하는 명령어 distinct
 FROM emp;
  
+ 
  --006. 데이터 정렬 
  -- 사원의 이름, 직책, 월급을 출력하되, 월급이 높은 사람부터 정렬하라. 
  
  SELECT ename, job, sal
  FROM emp
  ORDER BY sal DESC; -- 정렬을 위한 명령어: order by  / 디폴트: 오름차순 / 내림차순으로 정렬시 desc를 컬럼명 뒤에 기재
-
+ 
  
 --007. WHERE절 1 (숫자 데이터 검색)
 -- emp 테이블에서 월급이 3000인 사람의 이름과, 직책을 출력하라. 
@@ -79,6 +80,7 @@ WHERE job^= 'SALESMAN'; -- '같지 않다' 역할을 하는 연산자 사용.
 SELECT empno, ename, sal
 FROM emp
 WHERE sal BETWEEN 500 AND 1500; -- 조건절에 between and 구문을 사용해 범위를 지정한다. 
+
 
 --012. 비교연산자 3 'like'
 -- 이름의 두번째 글자가 M인 모든 사원의 이름과 입사일을 출력하라. 
@@ -159,12 +161,12 @@ FROM emp;
 SELECT ename, rpad(sal, 10, '*')
 FROM emp;
 
+
 --022. 특정 철자 잘라내기 'trim', 'rtrim', 'ltrim'
 -- 사원의 이름과 월급을 출력하되, 월급의 마지막 자리 0 하나를 잘라내라. 
 
 SELECT ename, rtrim(sal,0)
 FROM emp;
-
 
 --023. 반올림 해서 출력 'round'
 --사원테이블에서 사원의 이름과 월급의 12%를 출력하되, 소수점 이하는 반올림 처리하라. 
@@ -208,9 +210,9 @@ FROM dual;
 SELECT next_day('2021/05/05','월요일')
 FROM dual;
 
+
 --029. 특정 날짜가 있는 달의 마지막 날짜 출력하기 'last_day'
 -- 오늘부터 이달 말일까지 총 며칠 남았는지 구하시오.
-
 SELECT last_day(sysdate) - sysdate
 FROM dual;
 
@@ -240,7 +242,6 @@ SELECT ename, sal
 FROM emp
 WHERE sal = '3000'; 
 -- 실행은 되나 권장 사항 아님. 
-
 /*
 DESC emp;를 통해 해당 컬럼의 데이터 유형을 확인해보면 숫자형인 것을 알 수 있음. 
 숫자형인 데이터에 따옴표를 두름으로써 문자형으로 만들어준 셈. 
@@ -283,7 +284,6 @@ FROM emp
 WHERE job='SALESMAN';
 
 --추가. SALESMAN의 최대 월급과 직업명을 출력하라. 
-
 SELECT job, MAX(sal)
 FROM emp
 WHERE job='SALESMAN'
@@ -296,6 +296,7 @@ GROUP BY job;  --조건절 이후에 group by로 job을 그룹핑해 코딩 오�
 SELECT deptno, MIN(sal)
 FROM emp
 GROUP BY deptno; -- emp 테이블에서 deptno 즉 부서번호별로 그룹핑을 한 후, 최소 월급을 출력하는 구조.
+
 
 --038. 평균값 출력하기 'avg'
 -- 사원테이블에서 직업, 직업별 평균 월급을 출력하되, 가장 높은 값부터 출력하라. 
@@ -336,7 +337,8 @@ WHERE deptno=20;
 
 SELECT job, ename, sal, 
                DENSE_RANK() OVER (PARTITION BY job ORDER BY sal DESC) "월급의 순위"
-FROM emp;
+FROM emp; 
+
 
 --043. 데이터 분석 함수로 등급 출력하기 'ntile'
 --작성법: ntile (나눌 등급의 수) over ( order by 기준 컬럼 desc/asc)
@@ -386,15 +388,17 @@ SELECT SUM(DECODE(job,'CLERK',sal,NULL)) as CLERK,
 FROM emp;  --조회된 직업명을 바탕으로 SUM을 구하고, 컬럼명을 별칭으로 설정한다. 
 
 
---048. ROW를 COLUMN으로 출력하기2
+--048. ROW를 COLUMN으로 출력하기2 'pivot'
+--작성법: pivot(그룹함수 for 기준컬럼 in (데이터1, 데이터2,...))
+--직업과 직업별 토탈 월급을 pivot문을 이용하여 가로로 출력하세요.
+
+SELECT distinct job FROM emp;--  해당 기능을 통해 일단 중복되지 않는 모든 직업명 확인 후 PIVOT문 작성
+
+SELECT *
+FROM (SELECT job, sal FROM emp)
+PIVOT (SUM (sal) for job in ( 'CLERK', 'SALESMAN', 'PRESIDENT', 'MANAGER', 'ANALYST'));
+
 
 --049. COLUMN을 ROW로 출력하기
 
 --050. 데이터 분석 함수로 누적 데이터 출력하기 
-
-
-
-
-
-
-
