@@ -1,5 +1,7 @@
 --SQL 200제 예제 풀이 
 
+--SQL 기초실무 - 입문편 (001-015)
+
 -- 001.  테이블에 있는 특정 컬럼 선택해 조회하기 
 
 SELECT ename, job, sal -- 조회하고 싶은 특정 컬럼의 이름을 콤마(,)와 함께 나열 
@@ -113,6 +115,7 @@ SELECT ename, hiredate, sal, job
 FROM emp
 WHERE sal>= 1000 AND job='SALESMAN';
 
+--SQL 기초실무 - 기초편 (016-055)
 
 --016. 대소문자 변환 함수 'upper', 'lower', 'inicap'
 -- 이름이 SCOTT인 사원의 이름과 월급을 출력하되,, 소문자로 검색해도 출력되게 하라.
@@ -472,8 +475,51 @@ SELECT ename, sal, SUM(sal) OVER (ORDER BY empno) "월급에 대한 누적치"
 FROM emp
 WHERE deptno=20;
 
---051. 데이터 분석 함수로 비율 출력하기 
---052. 데이터 분석 함수로 집계 결과 출력하기1
---053. 데이터 분석 함수로 집계 결과 출력하기2
---054. 데이터 분석 함수로 집계 결과 출력하기3
---055. 데이터 분석 함수로 출력 결과 넘버링하기
+
+--051. 데이터 분석 함수로 비율 출력하기  'ratio_to_report'
+--작성법: ratio_to_report(컬럼명) over()
+-- 부서번호가 20번인 사원들의 사원번호, 이름, 월급, 월급에 대한 비율을 출력하세요.
+
+SELECT empno, ename, sal, ROUND(ratio_to_report(sal) over (),2) "월급에 대한 비율"
+FROM emp
+WHERE deptno=20;
+
+
+--052. 데이터 분석 함수로 집계 결과 출력하기1 'rollup'
+-- 작성법: group by절에 rollup(기준컬럼)
+-- 부서번호, 부서번호별 토탈월급을 출력하는데 맨 아래에 전체 토탈월급이 출력되게 하세요
+
+SELECT deptno, sum(sal)
+FROM emp
+GROUP BY rollup(deptno);
+
+
+--053. 데이터 분석 함수로 집계 결과 출력하기2  'cube'
+-- 작성법: group by절에 cube(기준컬럼)
+-- 입사한 년도(4자리), 입사한 년도별 토탈월급을 출력하는데 맨위에 사원 테이블의 전체 토탈월급이 출력되게 하세요. 
+
+SELECT to_char(hiredate,'YYYY') 입사년도, sum(sal) "입사년도별 토탈월급" 
+FROM emp
+GROUP by CUBE(to_char(hiredate,'YYYY'));
+
+
+--054. 데이터 분석 함수로 집계 결과 출력하기3 'grouping sets'
+-- 작성법: group by grouping sets (기준컬럼1, 기준컬럼2,....)
+-- 주의사항: 기준컬럼들이 동시에 묶인 결과를 출력할지, 단일 결괄르 출력할지에 따라 괄호를 적절하게 활용해야 한다. 
+-- 입사한 년도(4자리)별 토탈월급과 직업별 토탈월급을 위아래로 같이 출력하세요.
+
+SELECT to_char(hiredate,'YYYY'), job,sum(sal)
+FROM emp
+GROUP BY GROUPING SETS ((to_char(hiredate,'YYYY')),( job));
+
+
+--055. 데이터 분석 함수로 출력 결과 넘버링하기 'row_number'
+-- 작성법: row_number () over(order by 기준컬럼)
+-- 월급이 1000에서 3000 사이인 사원들의 이름과 월급을 출력하는데 출력하는 결과 맨 끝에 번호를 넘버링 해서 출력하세요.
+
+SELECT ename, sal, ROW_NUMBER() OVER (ORDER BY empno ASC) 번호
+FROM emp
+WHERE sal BETWEEN 1000 AND 3000;
+
+
+--SQL 기초실무 - 중급편 (056-092)
