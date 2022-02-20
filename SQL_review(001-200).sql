@@ -523,3 +523,44 @@ WHERE sal BETWEEN 1000 AND 3000;
 
 
 --SQL 기초실무 - 중급편 (056-092)
+
+--056. 출력되는 행 제한하기1 'rownum'
+ -- 직업이 SALESMAN인 사원들의 이름과 월급과 직업을 출력하는데 맨위의 행 2개만 출력하세요.
+ 
+ SELECT ename, sal, job
+ FROM emp
+ WHERE job='SALESMAN' AND rownum <=2;
+
+
+--057. 출력되는 행 제한하기2 'simple TOP-n queries)
+-- 최근에 입사한 사원순으로 이름, 입사일과 월급을 출력하는데 맨위의 5명만 출력하세요.
+
+SELECT ename, hiredate, sal
+FROM emp
+ORDER BY hiredate DESC 
+FETCH FIRST 3 ROWS ONLY;
+
+
+--058. 여러 테이블의 데이터를 조인해서 출력하기1 'equi join'
+-- DALLAS에서 근무하는 사원들의 이름과 월급과 부서위치를 출력하세요
+
+SELECT e.ename, e.sal, d.loc
+FROM emp e, dept d
+WHERE e.deptno = d.deptno AND d.loc='DALLAS';
+
+--059. 여러 테이블의 데이터를 조인해서 출력하기2 'non equi join'
+
+
+--060. 여러 테이블의 데이터를 조인해서 출력하기3 'outer join'
+--061. 여러 테이블의 데이터를 조인해서 출력하기4 'self join'
+--062. 여러 테이블의 데이터를 조인해서 출력하기5 'on절'
+--063. 여러 테이블의 데이터를 조인해서 출력하기5 'using절'
+--064. 여러 테이블의 데이터를 조인해서 출력하기6 'natural join'
+--065. 여러 테이블의 데이터를 조인해서 출력하기7 'left,right outer join'
+--066. 여러 테이블의 데이터를 조인해서 출력하기8 'full outer join'
+--067. 집합 연산자로 데이터를 위아래로 연결하기1 'union all'
+--068. 집합 연산자로 데이터를 위아래로 연결하기2 'union'
+
+
+
+
