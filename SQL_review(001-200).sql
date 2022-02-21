@@ -549,12 +549,69 @@ FROM emp e, dept d
 WHERE e.deptno = d.deptno AND d.loc='DALLAS';
 
 --059. 여러 테이블의 데이터를 조인해서 출력하기2 'non equi join'
+-- 급여 등급이 4등급인 사원들의 이름과 월급을 출력하는데 월급이 높은 사원부터 출력하세요
+
+
+drop  table  salgrade;
+ 
+create table salgrade
+( grade   number(10),
+  losal   number(10),
+  hisal   number(10) );
+ 
+insert into salgrade  values(1,700,1200);
+insert into salgrade  values(2,1201,1400);
+insert into salgrade  values(3,1401,2000);
+insert into salgrade  values(4,2001,3000);
+insert into salgrade  values(5,3001,9999);
+ 
+commit;
+
+SELECT e.ename, e.sal
+FROM emp e, salgrade s
+WHERE e.sal BETWEEN s.losal AND s.hisal AND s.grade = 4  --emp와 salgrade 컬럼은 공통 컬럼이 없음. 유사한 성격을 가진 컬럼으로 조인함.
+ORDER BY e.sal DESC;
 
 
 --060. 여러 테이블의 데이터를 조인해서 출력하기3 'outer join'
+-- 사원 테이블 전체에 이름과 부서위치를 출력하는데 JACK도 출력되게 하시오.
+
+INSERT INTO emp(empno, ename,sal, deptno)
+VALUES (7122, 'JACK', 3000, 70);
+
+COMMIT;
+
+SELECT e.ename, d.loc
+FROM emp e, dept d
+WHERE e.deptno=d.deptno(+);
+
+
 --061. 여러 테이블의 데이터를 조인해서 출력하기4 'self join'
---062. 여러 테이블의 데이터를 조인해서 출력하기5 'on절'
+-- 사원이름과 직업을 출력하고 관리자 이름과 관리자의 직업을 출력하시오.
+-- 조건: 관리자인 사원들보다 더 많은 월급을 받는 사원들의 데이터만 출력하시오. 
+
+SELECT 사원.ename 사원이름, 사원.sal 월급, 관리자.ename 관리자, 관리자.job 직업 
+FROM emp 사원, emp 관리자
+WHERE 사원.mgr = 관리자.empno AND 사원.sal > 관리자.sal;  -- 동일한 테이블 내에서 조인이 필요한 경우.
+
+
+--062. 여러 테이블의 데이터를 조인해서 출력하기5 'on절' (ANSI조인)
+-- 월급이 1000에서 3000 사이인 사원들의 이름과 월급과 부서위치를  on절을 사용한 조인문법으로 출력하세요.
+
+SELECT e.ename, e.sal, d.loc
+FROM emp e JOIN dept d
+ON (e. deptno = d.deptno)
+WHERE e.sal BETWEEN 1000 AND 3000;
+
+
 --063. 여러 테이블의 데이터를 조인해서 출력하기5 'using절'
+--using절을 사용한 조인문법으로 부서위치가 DALLAS인 사원들의 이름과 월급과 부서위치를 출력하세요.
+
+SELECT e.ename, e.sal, d.loc
+FROM emp e, dept d 
+USING( deptno )
+WHERE d.loc = 'DALLAS';
+
 --064. 여러 테이블의 데이터를 조인해서 출력하기6 'natural join'
 --065. 여러 테이블의 데이터를 조인해서 출력하기7 'left,right outer join'
 --066. 여러 테이블의 데이터를 조인해서 출력하기8 'full outer join'
