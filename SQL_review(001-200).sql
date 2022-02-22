@@ -612,12 +612,115 @@ FROM emp e, dept d
 USING( deptno )
 WHERE d.loc = 'DALLAS';
 
---064. 여러 테이블의 데이터를 조인해서 출력하기6 'natural join'
---065. 여러 테이블의 데이터를 조인해서 출력하기7 'left,right outer join'
+--064. 여러 테이블의 데이터를 조인해서 출력하기6 'natural join' (ANSI)
+--직업이 SALESMAN이고 부서번호가 30번인 사원들의 이름과 직업과 월급과 부서위치를 출력하세요 .
+
+SELECT e.ename, e.job, e.sal, d.loc
+FROM emp e NATURAL JOIN dept d
+WHERE e.job ='SALESMAN' AND deptno=30; -- 주의: natural 조인에서 공통으로 가지고 있는 컬럼에 별칭 사용하면 오류 발생
+
+--065. 여러 테이블의 데이터를 조인해서 출력하기7 'left,right outer join' (ANSI)
+-- 다음의 데이터를 사원 테이블에 입력하고 1999 ANSI 조인문법을 사용하여 이름과 직업, 월급과 부서위치를 출력하라.
+-- 조건: 사원 테이블에 JACK도 출력될 수 있도록 하세요
+
+INSERT INTO emp(empno, ename, sal, job, deptno)
+VALUES (8282, 'JACK', 3000, 'ANALYST', 50);
+
+SELECT e.ename, e.job, e.sal, d.loc
+FROM emp e LEFT OUTER JOIN dept d
+ON (e.deptno = d.deptno);
+
+
 --066. 여러 테이블의 데이터를 조인해서 출력하기8 'full outer join'
+-- 직업이 ANALYST이거나 부서위치가 BOSTON인 사원들의 이름과 직업과 월급과 부서위치를 출력하는데 full outer 조인을 사용하여 출력하세요
+
+SELECT e.ename, e.job, e.sal, d.loc
+FROM emp e FULL OUTER JOIN dept d
+ON (e.deptno = d.deptno)
+WHERE e.job = 'ANALYST' or d.loc = 'BOSTON';
+
+
 --067. 집합 연산자로 데이터를 위아래로 연결하기1 'union all'
---068. 집합 연산자로 데이터를 위아래로 연결하기2 'union'
+-- 직업과 직업별 토탈월급을 출력하는데 맨 아래에 전체 토탈월급도 출력하세요.
+
+SELECT job, SUM(sal)
+FROM emp
+GROUP BY job
+UNION ALL
+SELECT TO_CHAR(null) as job, SUM(sal) 
+FROM emp
+ORDER BY job ASC;
+--union all을 통해 두개의 쿼리를 연결할 때 사용하는 컬럼의 갯수가 동일해야하므로 아래 쿼리에 null값 삽입
+--조인을 보다 효과적으로 실행해주기 위해 위에 null을 명시된 job컬럼의 데이터타입과 맞춰주는 작업 필요함 
 
 
+--068. 집합 연산자로 데이터를 위아래로 연결하기2 'union' 1
+-- 직업, 직업별 토탈월급을 출력하는데 직업이 abcd순으로  정렬되어서 출력하고 맨 아래에 전체 토탈월급을 출력하세요.
+
+SELECT job, SUM(sal)
+FROM emp
+GROUP BY job
+UNION
+SELECT TO_CHAR(null) as job, SUM(sal)
+FROM emp;
 
 
+--069. 집합 연산자로 데이터를 위아래로 연결하기2 'union' 2
+-- 다음과 같이 입사한 년도, 입사한 년도별 토탈월급을 출력하는데 맨 아래에 전체 토탈월급이 출력되게 하세요.
+-- 입사한 년도는 정렬이 되어서 출력되게 하세요. 
+
+SELECT TO_CHAR(hiredate,'YYYY') 입사년도, SUM(sal) 토탈월급
+FROM emp
+GROUP BY TO_CHAR(hiredate,'YYYY')
+UNION
+SELECT TO_CHAR(null) 입사년도, SUM(sal) 토탈월급
+FROM emp;
+
+
+--070. 집합 연산자로 데이터의 교집합을 출력하기 'intersect'
+-- 사원 테이블과 부서 테이블과의 공통된 부서번호가 무엇인지 출력하시오
+
+SELECT deptno
+FROM emp
+INTERSECT
+SELECT deptno
+FROM dept;
+
+
+--071. 집합연산자로 데이터의 차이를 출력하기 'minus'
+-- 부서 테이블에는 존재하는데 사원 테이블에는 존재하지 않는 부서번호는?
+
+SELECT deptno
+FROM dept
+MINUS
+SELECT deptno
+FROM emp;
+
+
+--072. 서브 쿼리 사용하기 1 단일행 서브쿼리 
+-- ALLEN 보다 더 늦게 입사한 사원들의 이름과 월급을 출력하세요.
+
+SELECT ename, sal
+FROM emp
+WHERE hiredate > (SELECT hiredate 
+                                 FROM emp
+                                 WHERE ename='ALLEN');
+
+
+--073. 서브 쿼리 사용하기 2 다중행 서브쿼리
+-- 부서번호가 20번인 사원들과 같은 직업을 갖는 사원들의 이름과 직업을 출력하시오
+
+SELECT ename, sal
+FROM emp
+WHERE job IN (SELECT job 
+                          FROM emp
+                          WHERE deptno=20) and deptno!=20;  --20번 부서 직원들과 직업이 같되 20번 부서 직원들은 출력되지 않게 하기 위함
+                          
+--074. 서브 쿼리 사용하기 3 NOT IN
+--075. 서브 쿼리 사용하기 4 EXISTS와 NOT EXISTS
+--076. 서브 쿼리 사용하기 5 HAVING절
+--077. 서브 쿼리 사용하기 6 FROM절
+--078. 서브 쿼리 사용하기 7 SELECT절
+--079. 데이터 입력하기 insert
+--080. 데이터 수정하기 update
+--081. 데이터 삭제하기 delete, truncate, drop
