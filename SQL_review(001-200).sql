@@ -761,6 +761,56 @@ FROM (SELECT ename, hiredate, rank() over (order by hiredate asc) rnk
 WHERE rnk =1;
 
 --078. 서브 쿼리 사용하기 7 SELECT절
+-- 직업이 SALESMAN인 사원들의 이름과 월급을 출력하면서 그 옆에 직업이 SALESMAN인 사원들의 최대월급과 최소월급을 출력하세요.
+
+SELECT ename, sal, (SELECT MAX(sal) FROM emp WHERE job='SALESMAN') 최대월급, 
+                                   (SELECT MIN(sal) FROM emp WHERE job='SALESMAN') 최소월급
+FROM emp
+WHERE job = 'SALESMAN';
+
+
 --079. 데이터 입력하기 insert
+-- 부서테이블에 아래의 데이터를 입력하세요. 
+-- 부서번호 50, 부서이름 RESEARCH, 부서위치 SEOUL
+
+INSERT INTO dept (deptno, dname, loc)  
+VALUES (50, 'RESEARCH','SEOUL');
+
+
 --080. 데이터 수정하기 update
+-- 직업이 SALESMAN인 사원들의 커미션을 7000으로 수정하세요.
+
+UPDATE emp
+SET comm = 7000
+WHERE job= 'SALESMAN';
+
+
 --081. 데이터 삭제하기 delete, truncate, drop
+-- 월급이 3000 이상인 사원들을 삭제하세요.
+
+DELETE FROM emp
+WHERE sal >= 3000;
+
+
+--082. 데이터 입력, 수정, 삭제 한번에 하기 merge
+-- 사원테이블에 부서명 컬럼을 추가하고 해당 사원의 부서명으로 값을 갱신하세요. 
+
+ALTER TABLE emp
+ADD dname varchar2(10); -- 사원 테이블에 없는 컬럼을 merge하기 전에 추가해줌.
+
+MERGE INTO emp e
+USING dept d
+ON (e.deptno = d.deptno)
+WHEN MATCHED THEN
+UPDATE SET e.dname=d.dname;
+
+--083. 락(LOCK) 이해하기
+--084. SELECT FOR UPDATE절 이해하기
+--085. 서브 쿼리를 사용하여 데이터 입력하기
+--086. 서브 쿼리를 사용하여 데이터 수정하기
+--087. 서브 쿼리를 사용하여 데이터 삭제하기
+--088. 서브 쿼리를 사용하여 데이터 합치기
+--089. 계층형 질의문으로 서열을 주고 데이터 출력하기1
+--090. 계층형 질의문으로 서열을 주고 데이터 출력하기2
+--091. 계층형 질의문으로 서열을 주고 데이터 출력하기3
+--092. 계층형 질의문으로 서열을 주고 데이터 출력하기4
