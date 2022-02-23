@@ -717,9 +717,49 @@ WHERE job IN (SELECT job
                           WHERE deptno=20) and deptno!=20;  --20번 부서 직원들과 직업이 같되 20번 부서 직원들은 출력되지 않게 하기 위함
                           
 --074. 서브 쿼리 사용하기 3 NOT IN
+-- 관리자가 아닌 사원들의 이름과 월급과 직업을 출력하세요. 
+
+select * from emp;
+
+SELECT ename, sal, job
+FROM emp
+WHERE ename NOT IN ( SELECT ename 
+                                          FROM emp 
+                                          WHERE job = 'MANAGER'); 
+
+
 --075. 서브 쿼리 사용하기 4 EXISTS와 NOT EXISTS
+--  부서테이블에 있는 부서 번호중에서 사원 테이블에 존재하지 않는 부서번호에 대한 모든 컬럼을 출력하세요.
+
+SELECT *
+FROM dept d
+WHERE NOT EXISTS ( SELECT *
+                                       FROM emp e
+                                       WHERE e.deptno = d.deptno);
+
+
+
 --076. 서브 쿼리 사용하기 5 HAVING절
+-- 부서번호, 부서번호별 인원수를 출력하는데 10번 부서번호의 인원수보다 더 큰 것만 출력하시오.
+
+SELECT deptno, count (*)
+FROM emp
+GROUP BY deptno
+HAVING COUNT(*) > (SELECT COUNT(*)
+                                      FROM emp
+                                      WHERE deptno=10);
+
+
 --077. 서브 쿼리 사용하기 6 FROM절
+-- 직업이 SALESMAN인 사원들 중에서 가장 먼저 입사한 사원의 이름과 입사일을 출력하세요 .
+
+
+SELECT*
+FROM (SELECT ename, hiredate, rank() over (order by hiredate asc) rnk
+             FROM emp
+            WHERE job='SALESMAN')
+WHERE rnk =1;
+
 --078. 서브 쿼리 사용하기 7 SELECT절
 --079. 데이터 입력하기 insert
 --080. 데이터 수정하기 update
