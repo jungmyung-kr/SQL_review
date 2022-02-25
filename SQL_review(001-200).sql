@@ -804,13 +804,46 @@ ON (e.deptno = d.deptno)
 WHEN MATCHED THEN
 UPDATE SET e.dname=d.dname;
 
+
 --083. 락(LOCK) 이해하기
+-- SCOTT으로 접속한 차을 2개를 열어놓은 상태에서 하나의 창에서 ALLEN의 월급을 2000으로 수정하고 커밋을 안한 상태에서 
+-- 다른창에서 ALLEN의 부서번호를 10번으로 수정하면 수정이 되겠는가?
+
+-- update를 하는 순간 커밋이 되지 않아도 해당 행이 lock 걸려 Script runner가 완료되지 않는다.
+-- 앞선 update가 커밋되는 순간 두번째 update도 완료된다.
+
+
 --084. SELECT FOR UPDATE절 이해하기
+-- 부서번호가 10,20번인 사원들의 이름과 직업과 부서번호를 조회하는 동안
+-- 그 누구도 부서번호 10,20번인 사우너들의 데이터를 갱신하지 못하도록 하시오.
+
+SELECT ename, job, deptno
+FROM emp
+WHERE deptno in (10,20)
+FOR UPDATE;
+
+
 --085. 서브 쿼리를 사용하여 데이터 입력하기
+-- 부서 테이블과 같은 구조의 테이블을 dept2라는 이름으로 생성하고
+-- 부서번호가 20,30번인 모든 컬럼의 데이터를 dept2에 입력하시오.
+
+CREATE TABLE dept2
+AS
+SELECT *
+FROM dept
+WHERE 1=2;
+
+INSERT  INTO dept2
+SELECT *
+FROM dept
+WHERE deptno IN (20,30);
+
+
 --086. 서브 쿼리를 사용하여 데이터 수정하기
---087. 서브 쿼리를 사용하여 데이터 삭제하기
---088. 서브 쿼리를 사용하여 데이터 합치기
---089. 계층형 질의문으로 서열을 주고 데이터 출력하기1
---090. 계층형 질의문으로 서열을 주고 데이터 출력하기2
---091. 계층형 질의문으로 서열을 주고 데이터 출력하기3
---092. 계층형 질의문으로 서열을 주고 데이터 출력하기4
+-- 부서 번호가 30번인 사원들의 직업을 MARTIN의 직업으로 변경하세요. 
+
+UPDATE emp
+SET job = (SELECT job 
+                   FROM emp
+                   WHERE ename = 'MARTIN')
+WHERE deptno =30;
