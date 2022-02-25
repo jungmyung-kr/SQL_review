@@ -847,3 +847,48 @@ SET job = (SELECT job
                    FROM emp
                    WHERE ename = 'MARTIN')
 WHERE deptno =30;
+
+
+--087. 서브 쿼리를 사용하여 데이터 삭제하기
+-- ALLEN보다 늦게 입사한 사원들의 모든 행을 지우세요.
+
+DELETE 
+FROM emp
+WHERE hiredate > (SELECT hiredate
+                                 FROM emp
+                                 WHERE ename = 'ALLEN');
+
+
+--088. 서브 쿼리를 사용하여 데이터 합치기
+-- 부서 테이블에 cnt라는 컬럼을 추가하고 해당 부서번호의 인원수로 값을 갱신하시오.
+
+ALTER TABLE dept
+ADD cnt number(10);
+
+MERGE INTO dept d
+USING (select deptno, count(*) cnt
+             FROM emp
+             GROUP BY deptno) v
+ON (d.deptno = v.deptno)
+WHERE matched then 
+UPDATE SET d.cnt = v.cnt;
+
+
+--089. 계층형 질의문으로 서열을 주고 데이터 출력하기1
+-- 서열이 2위인 사원들의 이름과 서열과 직업을 출력하세요.
+
+SELECT rpad (' ', level*3) || ename, sal, job
+FROM emp
+WHERE level =2
+START WITH ename = 'KING'
+CONNECT BY PRIOR empno = mgr;
+
+
+--090. 계층형 질의문으로 서열을 주고 데이터 출력하기2
+-- 사원 테이블에서 서열 순서대로 이름과 서열과 월급과 직업을 출력하는데 
+-- SCOTT과 SCOTT의 팀원과 FORD와 FORD의 팀원들이 출력되지 않게 하세요.
+
+SELECT rpad (' ', level*3) || ename AS employee, level, sal, job
+FROM emp
+START WITH ename = 'KING'
+CONNECT BY prior empno = mgr AND ename NOT IN ('SCOTT', 'FORD');
