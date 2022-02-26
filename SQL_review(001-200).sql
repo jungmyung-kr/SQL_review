@@ -971,3 +971,33 @@ AS
 SELECT job, sum(sal) as 토탈월급
 FROM emp
 GROUP BY job;
+
+
+--097. 데이터 검색 속도를 높이기 index
+-- 사원 테이블의 직업에 인덱스를 생성하세요. 
+
+CREATE INDEX emp_job
+ON emp(job); -- 직업에 인덱스 생성 완료
+
+EXPLAIN PLAN FOR
+SELECT ename, job
+FROM emp
+WHERE job = 'PRESIDENT'; -- 인덱스를 통해서 검색이 되는지 확인하기 위한 예시문
+
+SELECT * 
+FROM TABLE (dbms_xplan.display); -- 실행하면, 앞선 예시문을 인덱스를 통해 실행한 것을 확인 할 수 있다. 
+
+
+--098. 절대로 중복되지 않는 번호 만들기 sequence
+-- dept 테이블에 부서번호르 50번부터 입력하고 10씩 증가되는 시퀀스를 생성하시오. 
+-- 시퀀스 이름은 dept_seq1
+/* 작성법: 
+create sequence 시퀀스명 
+start with 시작할 번호
+increment by 증가시킬 수 (다음번호와의 간격)
+maxvalue 생성될 수의 최대값
+*/
+
+CREATE SEQUENCE dept_seq1
+START WITH 50
+INCREMENT BY 10;
