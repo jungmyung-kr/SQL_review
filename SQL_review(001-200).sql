@@ -915,3 +915,59 @@ SELECT enmae || '(' || sal || ')', sys_connect_by_path(ename || '(' || sal || ')
 FROM emp
 START WITH ename = 'KING'
 CONNECT BY PRIOR empno = mgr;
+
+
+--SQL 기초실무 - 중급편2 (093-110)
+
+--093. 일반 테이블 생성하기 create table
+-- 다음의 테이블을 생성하세요
+/*
+테이블명: emp50
+컬럼명: empno, ename, sal, job, deptno
+데이터 유형 3가지: 1. 문자형 : varchar2 , 2. 숫자형 : number , 3. 날짜형 : date 
+*/
+
+CREATE TABLE emp50
+(empno number(10),
+ename varchar2(10),
+sal number(10,2),
+job varchar2 (20),
+deptno number(10)
+);
+
+
+--094. 임시 테이블 생성하기 create temporary table
+-- 세션을 종료하면 데이터가 사라지는 임시테이블을 다음과 같이 생성하세요.
+/*
+테이블명: emp94
+컬럼명: empno, ename, sal
+
+1. on commit delete rows: 커밋을 하면 데이터를 지워라
+2. on commit preserve rows: 세션을 종료하면 데이터를 지워라
+*/
+
+SELECT GLOBAL TEMPORARY TABLE emp94
+(empno number(10),
+ename varchar2(10),
+sal number(10,2) )
+ON COMMIT PRESERVE ROWS;
+
+
+--095. 복잡한 쿼리를 단순하게 하기 1 view
+-- 사원테이블에서 부서번호가 20번인 사원들의 사원번호와 사원이름, 직업, 월급을 볼 수 있는 뷰를 생성하세요
+
+CREATE VIEW emp_view
+AS 
+SELECT empno, ename, job, sal
+FROM emp
+WHERE deptno = 20;
+
+
+--096. 복잡한 쿼리를 단순하게 하기 2 view
+-- 직업, 직업별 토탈월급을 출력하는 view를 emp_view96으로 생성하세요.
+
+CREATE VIEW emp_view96
+AS
+SELECT job, sum(sal) as 토탈월급
+FROM emp
+GROUP BY job;
