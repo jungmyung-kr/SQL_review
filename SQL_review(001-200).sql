@@ -892,3 +892,26 @@ SELECT rpad (' ', level*3) || ename AS employee, level, sal, job
 FROM emp
 START WITH ename = 'KING'
 CONNECT BY prior empno = mgr AND ename NOT IN ('SCOTT', 'FORD');
+
+
+--091. 계층형 질의문으로 서열을 주고 데이터 출력하기3
+-- BLAKE와 BLAKE의 팀원들만 출력하는데 서열을 유지한 상태에서 월급이 낮은 사원부터 출력하시오.
+
+SELECT rpad (' ', level*3) || ename AS employee, level, sal, job
+FROM emp
+START WITH ename = 'BLAKE'
+CONNECT BY prior empno = mgr 
+ORDER SIBLINGS BY sal ASC; 
+
+
+--092. 계층형 질의문으로 서열을 주고 데이터 출력하기4
+-- 다음과 같이 월급과 서열울 출력되게 하시오
+-- 예시 : 
+--KING(5000)         /KING(5000)
+--JONES(2975)     /KING(5000)/JONES(2975)
+--SCOTT(3000)    /KING(5000)/SCOTT(3000)/JONES(2975)
+
+SELECT enmae || '(' || sal || ')', sys_connect_by_path(ename || '(' || sal || ')','/') as path
+FROM emp
+START WITH ename = 'KING'
+CONNECT BY PRIOR empno = mgr;
