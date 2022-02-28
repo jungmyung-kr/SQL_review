@@ -1001,3 +1001,37 @@ maxvalue 생성될 수의 최대값
 CREATE SEQUENCE dept_seq1
 START WITH 50
 INCREMENT BY 10;
+
+
+--099.  실수로 지운 데이터 복구하기 1 flashback query
+-- 사원테이블의 월급을 모두 0으로 변경하고 commit 한 후에 사원테이블을 1분전 상태로 되돌리시오.
+
+UPDATE emp
+SET sal =0;
+
+COMMIT;
+
+SELECT sal 
+FROM emp
+AS OF TIMESTAMP (systimestamp - interval '1' minute); --1분전 상태 확인 
+
+MERGE INTO emp e
+USING (SELECT empno, sal
+              FROM emp
+              AS OF TIMESTAMP (systimestamp - interval '1' minute) ) s
+ON (e.empno = s.empno)
+WHEN MATCHED THEN
+UPDATE SET e.sal = s.sal; --1분전 상태를 서브쿼리를 이용해 s로 별칭 지어주고 update
+
+
+--100. 실수로 지운 데이터 복구하기 2 flashback table
+-- 사원 테이블의 월급을 전부 0으로 변경하고 commit 한 다음에 그 전 상황으로 복구하시오.
+
+UPDATE emp
+SET sal = 0;
+
+COMMIT; 
+
+FLASHBACK TABLE emp to TIMESTAMP (systimestamp - interval '5' minute); 
+
+COMMIT;
