@@ -1035,3 +1035,31 @@ COMMIT;
 FLASHBACK TABLE emp to TIMESTAMP (systimestamp - interval '5' minute); 
 
 COMMIT;
+
+--101. 실수로 지운 데이터 복구하기 3 flashback drop
+-- dept 테이블을 drop 하고 다시 복구하세요
+
+DROP TABLE dept;
+
+SELECT * 
+FROM user_recyclebin;
+
+FLASHBACK TABLE DEPT TO BEFORE DROP;
+
+
+--102. 실수로 지운 데이터 복구하기 4 flashback version query
+-- 부서 테이블의 부서위치를 전부 seoul로 변경하고 dept 테이블이 그동안 어떻게 변경되어 왔는지 확인하세요.
+
+UPDATE dept
+SET loc = 'SEOUL';
+
+COMMIT;
+
+SELECT deptno, dname, loc, versions_startime, versions_endtime, versions_operation
+FROM dept
+VERSIONS BETWEEN TIMESTAMP to_timestamp ('22/02/27 00:40:10', 'RRRR-MM-DD HH24:MI:SS')
+                              AND MAXVALUE
+ORDER BY versions_startime nulls first;
+
+SHOW PARAMETER undo;
+
