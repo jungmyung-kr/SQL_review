@@ -1063,3 +1063,39 @@ ORDER BY versions_startime nulls first;
 
 SHOW PARAMETER undo;
 
+
+--104. 데이터의 품질 높이기 1  primary key
+-- 사원 테이블의 empno에 primary key를 생성하시오. 
+
+ALTER TABLE emp
+ADD CONSTRAINT emp_empno_pk primary key (empno);
+
+--105. 데이터의 품질 높이기 2 unique
+-- 문제1. 사원번호, 사원이름, 월급, 직업을 담는 테이블을 아래와 같이 생성하는데 
+-- 사원번호 컬럼에 중복된 데이터가 입력되지 않도록 제약을 걸어서 생성하세요.
+
+-- 테이블명 : emp1000 / 컬럼명: empno, ename, sal, job
+
+CREATE TABLE emp1000(
+empno number(10) constraint emp1000_empno_un UNIQUE,
+ename varchar2(10),
+sal number(10),
+job varchar2(10)
+);
+
+insert into emp1000 values (1111, ' SCOTT', 3000, 'SALESMAN');
+insert into emp1000 values (2222, ' ALLEN', 5000, 'ANALYST');
+insert into emp1000 values (3333, ' SMITH', 6000, 'ANALYST');
+
+-- 문제2. 사원테이블 (emp)에 사원번호에 중복된 데이터가 있는지 검색해보세요.
+
+SELECT  empno, COUNT(*)
+FROM emp
+GROUP BY empno
+HAVING COUNT (*) >2;
+
+-- 문제3. 사원테이블(emp)에 사원번호에 중복된 데이터가 입력되지 못하도록 제약을 거세요.
+
+ALTER TABLE emp
+ADD CONSTRAINT emp_empno_un UNIQUE (empno);
+
