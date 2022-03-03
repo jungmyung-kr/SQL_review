@@ -1099,3 +1099,17 @@ HAVING COUNT (*) >2;
 ALTER TABLE emp
 ADD CONSTRAINT emp_empno_un UNIQUE (empno);
 
+
+--106. 데이터의 품질 높이기 3 not null
+-- 문제1. 사원 테이블에 사원 이름에 null 값이 몇 건 존재하는지 검색하세요.
+
+SELECT COUNT (*)
+FROM emp
+WHERE ename IS NULL;
+
+-- 문제2. 사원 테이블에 사원이름에 not null 제약을 거세요.
+
+ALTER TABLE emp
+MODIFY ename
+CONSTRAINT emp_ename_nn NOT NULL;
+
