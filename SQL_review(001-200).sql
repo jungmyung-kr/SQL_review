@@ -1113,3 +1113,23 @@ ALTER TABLE emp
 MODIFY ename
 CONSTRAINT emp_ename_nn NOT NULL;
 
+
+--107. 데이터의 품질 높이기 4 check
+-- 사원 테이블의 부서번호에 부서번호가 10번, 20번, 30번만 입력, 수정되게 체크 제약을 거시오. 
+
+ALTER TABLE emp
+ADD CONSTRAINT emp_deptno_ck CHECK (deptno IN (10,20,30) );
+
+
+--108. 데이터의 품질 높이기 5 foreign key
+-- 문제1. 사원 테이블에 empno에 primary key를 거시오.
+
+ALTER TABLE emp
+ADD CONSTRAINT emp_empno_pk PRIMARY KEY(empno);
+
+-- 문제2. 사원 테이블에 관리자 번호(mgr)에 foreign key 제약을 걸고 사원 테이블에 사원 번호에 있는 컬럼을 참조하게 하여
+-- 관리자 번호가 사원 테이블에 있는 사원 번호에 해당하는 사원들만 관리자 번호로 입력 또는 수정될 수 있도록 하시오.
+
+ALTER TABLE emp
+ADD CONSTRAINT emp_empno_fk FOREIGN KEY(mgr) REFERENCES emp(empno);
+
