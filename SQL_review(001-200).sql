@@ -1133,3 +1133,14 @@ ADD CONSTRAINT emp_empno_pk PRIMARY KEY(empno);
 ALTER TABLE emp
 ADD CONSTRAINT emp_empno_fk FOREIGN KEY(mgr) REFERENCES emp(empno);
 
+
+--109. with절 사용하기 1 with ~ as 
+-- 부서번호별 토탈 월급을 출력하는데 부서번호별 토탈월급들의 평균값보다 더 큰 것만 출력되게 하시오.
+
+WITH dept_sumsal as (SELECT deptno, SUM(sal) as sumsal
+                                      FROM emp
+                                      GROUP BY deptno)
+SELECT deptno, sumsal
+FROM dept_sumsal
+WHERE sumsal > ( SELECT AVG(sumsal)
+                                FROM dept_sumsal);
