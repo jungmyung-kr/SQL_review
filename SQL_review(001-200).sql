@@ -1144,3 +1144,19 @@ SELECT deptno, sumsal
 FROM dept_sumsal
 WHERE sumsal > ( SELECT AVG(sumsal)
                                 FROM dept_sumsal);
+                                
+
+--110. with절 사용하기 2 subquery factoring
+-- 입사한 년도와 입사한 년도별 토탈월급을 출력하는데 부서번호별 토탈 월급들의 평균값도다 더 큰 것만 출력하시오. 
+
+WITH  deptno_sumsal as (SELECT deptno, SUM(sal) 토탈
+                                           FROM emp
+                                           GROUP BY deptno) , 
+           hire_sumsal as (SELECT to_char(hiredate, 'RRRR') hire_year, SUM(sal) 토탈
+                                     FROM emp
+                                     GROUP BY to_char(hiredate, 'RRRR')
+                                     HAVING SUM(sal) > (SELECT AVG(토탈) + 3000
+                                                                         FROM deptno_sumsal))
+SELECT hire_year,  토탈
+FROM hire_sumsal;
+                                        
