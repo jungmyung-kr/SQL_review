@@ -1159,4 +1159,35 @@ WITH  deptno_sumsal as (SELECT deptno, SUM(sal) 토탈
                                                                          FROM deptno_sumsal))
 SELECT hire_year,  토탈
 FROM hire_sumsal;
-                                        
+                 
+                                                                         
+--SQL 기초실무 - 알고리즘 풀기 (111-125)
+
+--111. SQL로 알고리즘 풀기 1
+-- 구구단 2단 출력
+
+WITH loop_table AS (SELECT LEVEL AS num
+                                   FROM dual
+                                   CONNECT BY LEVEL <= 9)
+SELECT '2' || 'x' || num || '=' || 2 * num AS "2단"
+FROM loop_table;
+
+-- 문제1. 1부터 100까지의 합은 얼마인가?
+
+SELECT SUM(LEVEL) 
+FROM dual
+CONNECT BY LEVEL <=100;
+
+-- 문제2. 1부터 100까지 숫자 55를 뺀 수의 합은 얼마인가? 
+
+SELECT SUM(LEVEL) 
+FROM dual
+WHERE LEVEL != 55
+CONNECT BY LEVEL <=100;
+
+-- 문제 3. 1부터 100까지 짝수 수의 합은 얼마인가? 
+
+SELECT SUM(LEVEL) 
+FROM dual
+WHERE MOD(LEVEL,2) !=1
+CONNECT BY LEVEL <=100;
