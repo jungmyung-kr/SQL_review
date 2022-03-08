@@ -1191,3 +1191,27 @@ SELECT SUM(LEVEL)
 FROM dual
 WHERE MOD(LEVEL,2) !=1
 CONNECT BY LEVEL <=100;
+
+
+--112. SQL로 알고리즘 풀기 2 구구단 1~9단 출력
+
+WITH loop_table AS ( SELECT LEVEL AS num
+                                    FROM dual
+                                    CONNECT BY LEVEL <= 9),
+           gugu_table AS ( SELECT LEVEL + 1 AS gugu
+                                      FROM dual
+                                      CONNECT BY LEVEL <= 8)
+SELECT to_char (a.num) || ' x ' || to_char (b.gugu) || ' = ' || to_char(b.gugu * a.num) AS 구구단
+FROM loop_table a, gugu_table b;
+
+-- 문제1. 위의 결과에서 2, 5, 7단만 출력하세요. 
+
+WITH loop_table AS ( SELECT LEVEL AS num
+                                    FROM dual
+                                    CONNECT BY LEVEL <= 9),
+           gugu_table AS ( SELECT LEVEL + 1 AS gugu
+                                      FROM dual
+                                      CONNECT BY LEVEL <= 8)
+SELECT to_char (a.num) || ' x ' || to_char (b.gugu) || ' = ' || to_char(b.gugu * a.num) AS 구구단
+FROM loop_table a, gugu_table b
+WHERE a.num IN (2,5,7);
