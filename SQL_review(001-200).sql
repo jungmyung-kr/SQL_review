@@ -1215,3 +1215,14 @@ WITH loop_table AS ( SELECT LEVEL AS num
 SELECT to_char (a.num) || ' x ' || to_char (b.gugu) || ' = ' || to_char(b.gugu * a.num) AS 구구단
 FROM loop_table a, gugu_table b
 WHERE a.num IN (2,5,7);
+
+
+--113. SQL로 알고리즘 풀기 3 직각삼각형 출력
+
+with loop_table as (select level as num
+                                from dual
+                                connect by level <= 8)
+select lpad('★', num, '★') as star
+from loop_table;
+
+
