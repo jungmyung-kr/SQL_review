@@ -1226,3 +1226,10 @@ select lpad('★', num, '★') as star
 from loop_table;
 
 
+--114. SQL로 알고리즘 풀기 4 삼각형 출력
+
+with loop_table as ( select level as num
+                                 from dual
+                                 connect by level <= 8)
+select lpad(' ', 10-num, ' ') || lpad('★',num, '★') as "Triangle"
+from loop_table;
