@@ -1233,3 +1233,14 @@ with loop_table as ( select level as num
                                  connect by level <= 8)
 select lpad(' ', 10-num, ' ') || lpad('★',num, '★') as "Triangle"
 from loop_table;
+
+
+--115. SQL로 알고리즘 풀기 5 마름모 출력
+
+select lpad(' ', 5-level, ' ') || rpad('★', level, '★') as star
+from dual
+connect by level < 6
+union all
+select lpad(' ', level, ' ') || rpad('★', 5-level, '★') as star
+from dual
+connect by level<6;
