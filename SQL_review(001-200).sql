@@ -1244,3 +1244,24 @@ union all
 select lpad(' ', level, ' ') || rpad('★', 5-level, '★') as star
 from dual
 connect by level<6;
+
+--116. SQL로 알고리즘 풀기 6 사각형 출력
+undefine p_n1
+undefine p_n2
+accept p_n1 prompt '가로 숫자를 입력하세요'
+accept p_n2 prompt '세로 숫자를 입력하세요'
+with loop_table as (select level as num
+                                                     from dual
+                                                     connect by level <=&p_n2)
+select lpad('★', &p_n1, '★') as star
+from loop_table;
+
+--문제1. 숫자를 한번만 물어보게하고 정사각형이 출력되게 하시오. 
+undefine p_n1
+accept p_n1 prompt '숫자를 입력하세요'
+with loop_table as (select level as num
+                                                     from dual
+                                                     connect by level <=&p_n1)
+select lpad('★', &p_n1, '★') as star
+from loop_table;
+
