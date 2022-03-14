@@ -1265,3 +1265,13 @@ with loop_table as (select level as num
 select lpad('★', &p_n1, '★') as star
 from loop_table;
 
+
+--117. SQL로 알고리즘 풀기 7 1부터 10까지 숫자의 합
+
+undefine p_n
+accept p_n prompt '숫자를 입력하세요'
+
+select level as 합계
+From dual
+connect by level <=&p_n; 
+
