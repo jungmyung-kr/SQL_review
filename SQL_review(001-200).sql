@@ -1275,3 +1275,12 @@ select level as 합계
 From dual
 connect by level <=&p_n; 
 
+
+--118. SQL로 알고리즘 풀기 8 1부터 10까지 숫자의 곱
+
+undefine p_n
+accept p_n prompt '숫자를 입력하세요'
+
+select round(exp(sum(ln(level)))) 곱
+From dual
+connect by level <=&p_n; 
