@@ -1284,3 +1284,14 @@ accept p_n prompt '숫자를 입력하세요'
 select round(exp(sum(ln(level)))) 곱
 From dual
 connect by level <=&p_n; 
+
+
+--119. SQL로 알고리즘 풀기 9 1부터 10까지 짝수만 출력
+
+undefine p_n
+accept p_n prompt '숫자를 입력하세요';
+
+select listagg (level, ', ') as 짝수
+from dual
+where mod(level, 2) =0
+connect by level <= &p_n;
