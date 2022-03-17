@@ -1295,3 +1295,16 @@ select listagg (level, ', ') as 짝수
 from dual
 where mod(level, 2) =0
 connect by level <= &p_n;
+
+
+--120. SQL로 알고리즘 풀기 10 1부터 10까지 소수만 출력
+
+with loop_table as (select level as num 
+                                from dual
+                                connect by level <= 10)
+select l1.num as 소수1
+from loop_table l1, loop_table l2
+where mod(l1.num, l2.num) =0
+group by l1.num
+having count (l1.num) =2; 
+
