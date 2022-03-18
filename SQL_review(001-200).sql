@@ -1308,3 +1308,13 @@ where mod(l1.num, l2.num) =0
 group by l1.num
 having count (l1.num) =2; 
 
+
+--121. SQL로 알고리즘 풀기 11 최대 공약수
+--16과 24의 최대 공약수를  구하라. 
+
+with num_d as (select 16 as num1, 24 as num2 from dual)
+select max(level)
+from num_d
+where mod(num1, level) =0
+and mod (num2, level) = 0
+connect by level <= num2;
