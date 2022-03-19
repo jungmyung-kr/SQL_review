@@ -1318,3 +1318,12 @@ from num_d
 where mod(num1, level) =0
 and mod (num2, level) = 0
 connect by level <= num2;
+
+
+--122. SQL로 알고리즘 풀기 12 최소 공배수
+
+with num_d as (select 16 num1, 24 num2 from dual)
+select num1, num2, (num1/max(level))*(num2/max(level))*max(level) as "최소 공배수"
+from num_d
+where mod (num1, level) =0 and mod(num2,level)=0
+connect by level <= num2;
