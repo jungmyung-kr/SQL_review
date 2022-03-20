@@ -1327,3 +1327,15 @@ select num1, num2, (num1/max(level))*(num2/max(level))*max(level) as "최소 공
 from num_d
 where mod (num1, level) =0 and mod(num2,level)=0
 connect by level <= num2;
+
+
+--123. SQL로 알고리즘 풀기 13 피타고라스의 정리
+
+accept num1 prompt ' 밑변의 길이를 입력하세요.'
+accept num2 prompt '높이를 입력하세요.'
+accept num3 prompt '빗변의 길이를 입력하세요'
+select case when (power(&num1,2) + power(&num2,2)) = power(&num3,2)
+then '직각삼각형이 맞습니다'
+else '직각삼각형이 아닙니다'
+end as '피타고라스의 정리'
+from dual;
