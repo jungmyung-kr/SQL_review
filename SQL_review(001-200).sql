@@ -1339,3 +1339,15 @@ then '직각삼각형이 맞습니다'
 else '직각삼각형이 아닙니다'
 end as '피타고라스의 정리'
 from dual;
+
+
+--124. SQL로 알고리즘 풀기 14 몬테카를로 알고리즘
+-- 몬테카를로 알고리즘을 이용해서 원주율을 출력하라.
+
+select sum(case when (power(num1,2) + power(num2,2)) <= 1 
+                              then 1 
+                              else 0 end) / 100000 * 4 as "원주율"
+from ( select dbms_random.value(0,1) as num1, 
+                      dbms_random.value(0,1) as num2
+            from dual
+            connect by level < 100000);
