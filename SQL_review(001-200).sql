@@ -1351,3 +1351,12 @@ from ( select dbms_random.value(0,1) as num1,
                       dbms_random.value(0,1) as num2
             from dual
             connect by level < 100000);
+            
+
+--125. SQL로 알고리즘 풀기 15 오일러 상수 자연상수 구하기
+-- 몬테카를로 알고리즘을 이용하여 자연상수 e값을 출력하라. 
+
+with loop_table as (select level as num from dual connect by level <= 100000)
+select result 
+from (select num, power((1+1/num), num) as result from loop_table)
+where num = 100000;
