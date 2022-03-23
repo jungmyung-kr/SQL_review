@@ -1360,3 +1360,22 @@ with loop_table as (select level as num from dual connect by level <= 100000)
 select result 
 from (select num, power((1+1/num), num) as result from loop_table)
 where num = 100000;
+
+
+--SQL 기초실무 - 빅데이터 분석하기 (126-130)
+
+
+--126. SQL을 이용해서 빅데이터 분석하기 1
+-- 엑셀 데이터를 db에 로드하시오. 
+
+--www.data.go.kr 을 통해 암발생률 관련 자료를 내려받음.
+-- 데이터 내용 확인 후 적절하게 테이블 생성
+
+create table cancer 
+(암종 varchar(50), 질병코드 varchar(50), 환자수 number(10), 성별 varchar2(20), 조유병률 number(10,2), 생존률 number (10,2));
+
+-- 생성 후 데이터 임포트 (cancer.csv)
+-- 원본 컬럼명과 일치하지 않는 경우 직접 매칭시킴
+
+select * from cancer;
+-- 임포트 결과 확인
