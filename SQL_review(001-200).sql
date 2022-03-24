@@ -1379,3 +1379,23 @@ create table cancer
 
 select * from cancer;
 -- 임포트 결과 확인
+
+
+--127. SQL을 이용해서 빅데이터 분석하기 2
+-- 스티브 잡스 연설문에서 가장 많이 나오는 단어는 무엇인가?
+-- 자료 출처 https://news.stanford.edu/2005/06/14/jobs-061505/
+
+create table speech
+(speech_text varchar2(1000));
+-- 테이블 생성 후 텍스트 파일 임포트 
+
+select word, count(*)
+from (select regexp_substr(lower(speech_text), '[^ ]+', 1,a) word 
+           from speech, (select level a 
+                                   from dual
+                                   connect by level <=52)
+          )
+where word is not null
+group by word
+order by count(*) desc;
+-- 어절단위로 나눈 단어들을 카운트해 가장 많이 나오는 단어순으로 정렬
