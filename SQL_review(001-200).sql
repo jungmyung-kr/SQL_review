@@ -1399,3 +1399,32 @@ where word is not null
 group by word
 order by count(*) desc;
 -- 어절단위로 나눈 단어들을 카운트해 가장 많이 나오는 단어순으로 정렬
+
+
+--128. SQL을 이용해서 빅데이터 분석하기 3
+-- 스티브 잡스 연설문에는 긍정 단어가 많은가 부정단어가 많은가?
+
+create table positive (p_text varchar2(2000));
+create table negative (n_text varchar2(2000));
+
+create view speech_view
+as
+select regexp_substr(lower(speech_text), '[^ ]+', 1, a) word
+from speech, (select level a 
+                        from dual
+                        connect by level <= 52);
+                        
+-- 긍정 단어 건수 조회
+
+select count (word) as "긍정 단어"
+from speech_view
+where lower(word) in (select  lower(p_text)
+                                     from positive); -- 68건
+                                     
+-- 부정 단어 건수 조회
+
+select count (word) as "부정 단어"
+from speech_view
+where lower(word) in (select  lower(n_text)
+                                     from negative); -- 32건                                 
+-- 긍정 단어가 부정 단어보다 2배 이상 많이 사용되고 있다. 
