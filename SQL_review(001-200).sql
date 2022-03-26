@@ -1428,3 +1428,35 @@ from speech_view
 where lower(word) in (select  lower(n_text)
                                      from negative); -- 32건                                 
 -- 긍정 단어가 부정 단어보다 2배 이상 많이 사용되고 있다. 
+
+
+--129. SQL을 이용해서 빅데이터 분석하기 4
+-- 절도가  많이 발생하는 요일은 언제인가?
+-- 출처: https://www.data.go.kr/data/2950729/fileData.do
+-- <대검찰청 범죄발생 요일 현황>
+
+create table crime_day
+(CRIME_TYPE varchar(50),
+ SUN_CNT number(10),
+ MON_CNT number(10), 
+ TUE_CNT number(10),
+ WED_CNT number(10),
+ THU_CNT number(10),
+ FRI_CNT number(10),
+ SAT_CNT number(10),
+ UNKNOWN_CNT number(10));
+
+-- 특정 범죄가 많이 발생한 요일을 출력하기 편하게 unpivot 사용
+CREATE TABLE crime_day_unpivot
+AS
+SELECT * 
+FROM crime_day
+UNPIVOT (CNT FOR DAY_CNT IN (SUN_CNT, MON_CNT, TUE_CNT, WED_CNT, THU_CNT, FRI_CNT, SAT_CNT));
+ 
+ -- 절도 범죄만 선택하여 rank 함수를 통해 순위 부여
+ SELECT * 
+ FROM ( SELECT DAY_CNT, CNT, RANK() OVER (ORDER BY CNT DESC) RNK 
+              FROM CRIME_DAY_UNPIVOT
+              WHERE TRIM(CRIME_TYPE)='절도')
+WHERE RNK = 1; 
+-- 절도범죄가 가장 많이 일어나는 요일은 금요일이다. 
