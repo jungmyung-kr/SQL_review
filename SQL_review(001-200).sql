@@ -1460,3 +1460,26 @@ UNPIVOT (CNT FOR DAY_CNT IN (SUN_CNT, MON_CNT, TUE_CNT, WED_CNT, THU_CNT, FRI_CN
               WHERE TRIM(CRIME_TYPE)='절도')
 WHERE RNK = 1; 
 -- 절도범죄가 가장 많이 일어나는 요일은 금요일이다. 
+
+
+--130. SQL을 이용해서 빅데이터 분석하기 5
+-- 우리나라에서 대학 등록금이 가장 높은 학교는 어디인가?
+-- 자료 출처 : https://www.data.go.kr/data/3071171/fileData.do
+-- < 한국장학재단_대학별 평균 등록금>
+
+CREATE TABLE UNIVERSITY_FEE
+(DIVISION VARCHAR2(20),
+ TYPE VARCHAR2(20),
+ UNIVERSITY VARCHAR(60),
+ LOC VARCHAR(20),
+ ADMISSION_CNT NUMBER(20),
+ ADMISSION_FEE NUMBER(20),
+ TUITION_FEE NUMBER(20));
+ 
+ SELECT * 
+ FROM (SELECT UNIVERSITY, TUITION_FEE, 
+              RANK() OVER (ORDER BY TUITION_FEE DESC NULLS LAST) 순위
+              FROM UNIVERSITY_FEE)
+WHERE 순위 = 1 ;
+
+-- 한국 산업 기술대학교가 등록금이 8,997,116으로 가장 높다.
