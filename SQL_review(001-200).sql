@@ -1483,3 +1483,33 @@ CREATE TABLE UNIVERSITY_FEE
 WHERE 순위 = 1 ;
 
 -- 한국 산업 기술대학교가 등록금이 8,997,116으로 가장 높다.
+
+
+--131. SQL을 이용해서 빅데이터 분석하기 6
+-- 서울시 물가 중 가장 비싼 품목과 가격은 무엇인가? 
+-- http://data.seoul.go.kr/dataList/OA-1170/S/1/datasetView.do
+-- <서울시 생필품 농수축산물 가격 정보 2021년>
+
+CREATE TABLE PRICE 
+(P_SEQ NUMBER(10),
+ M_SEQ NUMBER(10),
+ M_NAME VARCHAR(80),
+ A_SEQ NUMBER(10),
+ A_NAME VARCHAR2(60),
+ A_UNIT VARCHAR2(40),
+ A_PRICE NUMBER(10),
+ P_YEAR_MONTH VARCHAR2(30),
+ ADD_COL VARCHAR2(180),
+ M_TYPE_CODE VARCHAR2(20),
+ M_TYPE_NAME VARCHAR2(20),
+ M_GU_CODE VARCHAR2(10),
+ M_GU_NAME VARCHAR2(30));
+
+
+
+SELECT A_NAME AS "상품", A_PRICE as "가격", M_NAME as "매장명"
+FROM PRICE
+WHERE A_PRICE = (SELECT MAX(A_PRICE)
+                           FROM PRICE);
+                           
+                           
