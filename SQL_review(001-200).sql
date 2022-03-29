@@ -1513,3 +1513,18 @@ WHERE A_PRICE = (SELECT MAX(A_PRICE)
                            FROM PRICE);
                            
                            
+--132. SQL을 이용해서 빅데이터 분석하기 7
+-- 살인이 가장 많이 발생하는 장소는 어디인가?
+
+CREATE TABLE  crime_loc
+( CRIME_TYPE     varchar2(50),
+  C_LOC             varchar2(50),
+  CNT             number(10) );
+
+SELECT * 
+FROM ( SELECT C_LOC, CNT, RANK() OVER (ORDER BY CNT DESC) RNK
+            FROM CRIME_LOC
+            WHERE CRIME_TYPE = '살인')
+WHERE RNK = 1;
+
+-- 살인이 가장 많이 발생하는 장소는 '집'이다.
