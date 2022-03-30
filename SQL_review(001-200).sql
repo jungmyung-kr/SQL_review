@@ -1528,3 +1528,44 @@ FROM ( SELECT C_LOC, CNT, RANK() OVER (ORDER BY CNT DESC) RNK
 WHERE RNK = 1;
 
 -- 살인이 가장 많이 발생하는 장소는 '집'이다.
+
+
+--133. SQL을 이용해서 빅데이터 분석하기 8
+-- 가정불화로 생기는 가정 큰 범죄 유형은 무엇인가?
+
+create table crime_cause
+(범죄유형  varchar2(30),
+생계형  number(10),
+유흥 number(10),
+도박 number(10),
+허영심 number(10),
+복수  number(10),
+해고  number(10),
+징벌 number(10),
+가정불화  number(10),
+호기심 number(10),
+유혹  number(10),
+사고   number(10),
+불만   number(10),
+부주의   number(10),
+기타   number(10)  );
+
+-- 범죄 동기가 출력되기 용이하도록 unpivot문으로 범죄 동기 컬럼을 행으로 검색한 데이터를 생성한다
+
+CREATE  TABLE  CRIME_CAUSE2
+AS
+SELECT *
+FROM CRIME_CAUSE
+UNPIVOT ( CNT FOR TERM IN (생계형, 유흥, 도박, 허영심, 복수, 해고, 징벌, 가정불화, 호기심, 유혹, 사고, 불만, 부주의, 기타));
+
+
+-- 서브 쿼리에서 가정불화로 인한 범죄 원인의 건수 중에 가장 큰 건수를 출력한 후, 
+-- 그 건수와 같으면서 원인이 가정불화인 범죄 유형을 메인쿼리에서 조회
+SELECT 범죄유형
+FROM CRIME_CAUSE2
+WHERE CNT = ( SELECT MAX(CNT)
+                          FROM CRIME_CAUSE2
+                          WHERE TERM='가정불화' )
+   AND TERM='가정불화';
+   
+-- 가정불화로 생기는 가장 큰 범죄 유형은 '폭행'이다.
