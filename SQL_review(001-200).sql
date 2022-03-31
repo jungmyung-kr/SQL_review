@@ -1569,3 +1569,17 @@ WHERE CNT = ( SELECT MAX(CNT)
    AND TERM='가정불화';
    
 -- 가정불화로 생기는 가장 큰 범죄 유형은 '폭행'이다.
+
+
+--134. SQL을 이용해서 빅데이터 분석하기 9
+-- 방화 사건의 가장 큰 원인은 무엇인가?
+-- 133번에서 생성한 CRIME_CAUSE2 테이블 사용 
+
+SELECT TERM AS 원인
+FROM CRIME_CAUSE2
+WHERE CNT = (SELECT MAX(CNT)
+FROM CRIME_CAUSE2
+WHERE 범죄유형 = '방화')
+AND 범죄유형='방화';
+
+-- 방화 사건의 가장 큰 원인은 '사고'이다.
