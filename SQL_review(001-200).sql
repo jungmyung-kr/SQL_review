@@ -1621,3 +1621,24 @@ CREATE TABLE ACC_LOC_DATA
   WHERE 순위 <= 5;
 
 -- 부산광역시 부산진구 부전동(부전상가시장 부근)이 전체 사고건수 18건으로 전국에서 가장 많이 발생했다.
+
+
+-- 136. SQL을 이용해서 빅데이터 분석하기 11 
+-- 치킨집 폐업이 가장 많았던 연도가 언제인가?
+
+CREATE TABLE CLOSING
+(  년도        NUMBER(10),
+   미용실      NUMBER(10),
+   양식집      NUMBER(10),
+   일식집      NUMBER(10),
+   치킨집      NUMBER(10),
+   커피음료    NUMBER(10),
+   한식음식점   NUMBER(10),
+   호프간이주점  NUMBER(10) ) ;
+
+SELECT 년도 "치킨집 폐업 년도", 치킨집 "건수"
+  FROM ( SELECT 년도, 치킨집, rank() over(order by 치킨집 desc) 순위 
+               FROM closing )
+  WHERE 순위=1;
+  
+-- 치킨집 폐업이 가장 많았던 연도는 2007년도로 총 3579건이다. 
