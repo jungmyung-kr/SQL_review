@@ -1642,3 +1642,28 @@ SELECT 년도 "치킨집 폐업 년도", 치킨집 "건수"
   WHERE 순위=1;
   
 -- 치킨집 폐업이 가장 많았던 연도는 2007년도로 총 3579건이다. 
+
+
+-- 137. SQL을 이용해서 빅데이터 분석하기 12
+--세계에서 근무 시간이 가장 긴 나라는 어디인가?
+
+CREATE  TABLE  WORKING_TIME
+( COUNTRY      VARCHAR2(30),
+  Y_2014       NUMBER(10),
+  Y_2015       NUMBER(10),
+  Y_2016       NUMBER(10),
+  Y_2017       NUMBER(10),
+  Y_2018       NUMBER(10) );
+  
+ CREATE VIEW C_WORK_TIME
+AS
+SELECT *
+FROM WORKING_TIME
+UNPIVOT ( CNT FOR Y_YEAR IN ( Y_2014, Y_2015, Y_2016, Y_2017, Y_2018));
+  
+  
+SELECT COUNTRY, CNT, RANK() OVER (ORDER BY CNT DESC) 순위
+FROM C_WORK_TIME
+WHERE Y_YEAR ='Y_2018';
+
+-- 근무시간이 가장 긴 나라는 멕시코이다. 
