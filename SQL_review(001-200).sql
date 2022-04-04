@@ -1667,3 +1667,29 @@ FROM C_WORK_TIME
 WHERE Y_YEAR ='Y_2018';
 
 -- 근무시간이 가장 긴 나라는 멕시코이다. 
+
+
+--138. SQL을 이용해서 빅데이터 분석하기 13
+-- 남자와 여자가 각각 많이 걸리는 암은 무엇인가?
+
+CREATE  TABLE  CANCER
+( 암종       VARCHAR2(50),   
+  질병코드   VARCHAR2(20),
+  환자수     NUMBER(10),
+  성별       VARCHAR2(20),
+  조유병률   NUMBER(10,2),     
+  생존률    NUMBER(10,2) );
+
+SELECT DISTINCT(암종), 성별 , 환자수
+  FROM CANCER
+  WHERE 환자수 = (SELECT MAX(환자수)
+                             FROM CANCER
+                             WHERE 성별 = '남자' AND 암종 != '모든암')
+UNION ALL
+SELECT DISTINCT(암종) , 성별 , 환자수
+  FROM CANCER
+  WHERE 환자수 = (SELECT MAX(환자수)
+                            FROM CANCER
+                            WHERE 성별 = '여자');
+
+-- 남자는 '위암', 여자는 '갑상선암'이 가장 많이 걸렸다.
