@@ -1698,3 +1698,24 @@ SELECT DISTINCT(암종) , 성별 , 환자수
 -- 두수를 각각 물어보게 하고 입력받아 두수의 합이 결과로 출력되게 하는 PL/SQL을 작성해보시오.
 
 set serveroutput on
+accept p_num1 prompt '첫 번째 숫자를 입력하세요.'
+accept p_num2 prompt '두 번째 숫자를 입력하세요.'
+declare v_sum number(10);
+begin v_sum :=&p_num1 + &p_num2 ;
+dbms_output.put_line('총합은: ' || v_sum);
+end;
+/
+
+
+-- 140. PL/SQL 변수 이해하기 2
+-- 사원 번호를 물어보게 하고 사원 번호를 입력하면 해당 사원의 월급이 출력되게 하는 PL/SQL문을 작성해보시오.
+
+set serveroutput on
+accept p_empno prompt '사원 번호를 입력하세요.'
+declare v_sal number(10);
+begin select sal into v_sal
+from emp
+where empno = &p_empno;
+dbms_output.put_line('해당 사원의 월급은: ' || v_sal);
+end;
+/
