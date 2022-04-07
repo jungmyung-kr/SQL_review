@@ -1719,3 +1719,19 @@ where empno = &p_empno;
 dbms_output.put_line('해당 사원의 월급은: ' || v_sal);
 end;
 /
+
+
+-- 141. PL/SQL 변수 이해하기 3
+-- 숫자를 물어보게 하고 숫자를 입력하면 해당 숫자가 짝수인지 홀수인지 출력되게 하는 PL/SQL문을 작성해보시오.
+
+set serveroutput on
+set verify off
+accept p_num prompt '숫자를 입력하세요.'
+begin
+if mod(&p_num,2) = 0 then
+dbms_output.put_line('짝수입니다.');
+else 
+dbms_output.put_line('홀수입니다.');
+end if;
+end;
+/
