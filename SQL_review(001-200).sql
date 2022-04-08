@@ -1721,7 +1721,7 @@ end;
 /
 
 
--- 141. PL/SQL 변수 이해하기 3
+-- 141. PL/SQL if 이해하기 1
 -- 숫자를 물어보게 하고 숫자를 입력하면 해당 숫자가 짝수인지 홀수인지 출력되게 하는 PL/SQL문을 작성해보시오.
 
 set serveroutput on
@@ -1733,5 +1733,34 @@ dbms_output.put_line('짝수입니다.');
 else 
 dbms_output.put_line('홀수입니다.');
 end if;
+end;
+/
+
+
+--142.PL/SQL if 이해하기 2
+-- 이름을 입력받아 
+-- 해당사원의 월급이 3000 이상이면 고소득자, 
+-- 2000 이상이고 3000보다 작으면 중간 소득자,
+-- 2000 보다 작은 사원은 저소득자라는 메세지를 출력하는 PL/SQL문을 작성해보시오.
+
+set serveroutput on
+set verify off
+accept p_ename prompt '사원 이름을 입력하세요.'
+declare
+    v_ename emp.ename%type := upper('&p_ename');
+    v_sal emp.sal%type;
+    
+begin
+    select sal into v_sal
+    from emp
+    where ename= v_ename;
+    
+    if v_sal >= 3000 then
+        dbms_output.put_line('고소득자입니다.');
+    elsif v_sal >= 2000 then
+        dbms_output.put_line('중간 소득자입니다.');
+    else
+        dbms_output.put_line('저소득자입니다.');
+    end if;
 end;
 /
