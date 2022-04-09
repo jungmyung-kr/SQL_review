@@ -1779,3 +1779,17 @@ begin
     end loop;
 end;
 /
+
+
+--144. PL/SQL While Loop 이해하기 
+--PL/SQL의 While loop문으로 구구단 2단을 출력해 보겠습니다. 
+
+declare
+    v_count number(10) := 0;
+begin
+    while v_count < 9 loop
+        v_count := v_count + 1;
+        dbms_output.put_line ('2 x ' || v_count || ' = ' || 2 * v_count);
+    end loop;
+end;
+/
