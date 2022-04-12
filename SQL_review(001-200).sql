@@ -1805,3 +1805,17 @@ begin
     end loop;
 end;
 /
+
+
+--146. PL/SQL 이중 Loop 이해하기  
+--PL/SQL의 For loop문으로 구구단 2단~9단을 출력해보시오. 
+
+prompt 구구단 전체를 출력합니다
+begin
+    for i in 2 .. 9 loop
+        for j in 1 .. 9 loop
+            dbms_output.put_line ( i || ' x '  || j || ' = ' || i * j);
+        end loop;
+    end loop;
+end;
+/
