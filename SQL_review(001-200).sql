@@ -1821,7 +1821,7 @@ end;
 /
 
 
---147. PL/SQL Cursor문 이해하기  
+--147. PL/SQL Cursor문 이해하기 (basic loop)
 -- 커서문과 루프문을 활용해 부서 번호를 물어보게 하고, 부서 번호를 입력하면 해당 부서 사원이름, 월급, 부서 번호가 출력되게 하시오. 
 
 declare
@@ -1841,5 +1841,22 @@ begin
             dbms_output.put_line(v_ename|| ' '||v_sal|| ' '|| v_deptno);
         end loop;
     close emp_cursor;
+end;
+/
+
+
+--148. PL/SQL Cursor문 이해하기 (for loop)
+-- 커서문과 루프문을 활용해 부서 번호를 물어보게 하고, 부서 번호를 입력하면 해당 부서 사원이름, 월급, 부서 번호가 출력되게 하시오. 
+
+accept p_deptno prompt '부서 번호를 입력하세요.'
+declare
+    cursor emp_cursor is 
+        select ename, sal,deptno
+            from emp
+            where deptno = &p_deptno;
+begin
+    for emp_record in emp_cursor loop
+        dbms_output.put_line(emp_record.ename || ' ' || emp_record.sal || ' ' || emp_record.deptno);
+    end loop;
 end;
 /
