@@ -1860,3 +1860,18 @@ begin
     end loop;
 end;
 /
+
+
+--149. PL/SQL Cursor for loop문 이해하기
+-- 커서문과 루프문을 활용해 부서 번호를 물어보게 하고, 부서 번호를 입력하면 해당 부서 사원이름, 월급, 부서 번호가 출력되게 하시오. 
+-- 148번보다 더 간단하게 작성 
+
+accept p_deptno prompt '부서 번호를 입력하세요.'
+begin
+    for emp_record in( select ename, sal,deptno
+            from emp
+            where deptno = &p_deptno) loop 
+    dbms_output.put_line(emp_record.ename || ' ' || emp_record.sal || ' ' || emp_record.deptno);
+    end loop;
+end;
+/
