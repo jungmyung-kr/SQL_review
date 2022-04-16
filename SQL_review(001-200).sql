@@ -1875,3 +1875,21 @@ begin
     end loop;
 end;
 /
+
+
+--150. 프로시저 구현하기
+--이름을 입력받아 해당사원의 월급이 출력되게 하는 프로시저를 생성해 보시오. 
+
+create or replace procedure pro_ename_sal
+(p_ename in emp.ename%type)
+is
+    v_sal   emp.sal%type;
+begin
+    select sal into v_sal
+        from emp
+        where ename = p_ename;
+    
+    dbms_output.put_line(v_sal || '입니다');
+
+end;
+/
