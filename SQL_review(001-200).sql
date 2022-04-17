@@ -1893,3 +1893,20 @@ begin
 
 end;
 /
+
+
+--151. 함수 구현하기
+--부서 번호를 입력받아 해당 부서의 사원들의 부서 위치가 출력되는 함수를 생성해 보시오.
+
+create or replace function get_loc
+(p_deptno in dept.deptno%type)
+return dept.loc%type
+is
+    v_loc   dept.loc%type;
+begin
+    select loc into v_loc
+        from dept
+        where deptno = p_deptno;
+    return v_loc;
+end;
+/
