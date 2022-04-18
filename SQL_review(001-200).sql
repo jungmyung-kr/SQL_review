@@ -1910,3 +1910,22 @@ begin
     return v_loc;
 end;
 /
+
+
+--152. 수학식 구현하기 1 (절대값)
+--숫자를 물어보게 하고 해당 숫자의 절대값이 출력되는 PL/SQL문을 작성하시오. 
+
+set serveroutput on 
+accept p_num prompt '숫자를 입력하세요.'
+
+declare
+    v_num number(10) := &p_num;
+    
+begin
+    if v_num >= 0 then
+        dbms_output.put_line(v_num);
+    else 
+        dbms_output.put_line(-1*v_num);
+    end if;
+end;
+/
