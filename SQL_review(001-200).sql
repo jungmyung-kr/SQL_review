@@ -1929,3 +1929,23 @@ begin
     end if;
 end;
 /
+
+
+--153. 수학식 구현하기 2 (직각삼각형)
+--밑변과 높이와 빗변을 물어보게 하고 직각삼각형이 맞는지 출력되게 하는 PL/SQL문을 작성하시오. 
+
+set serveroutput on 
+set verify off
+accept p_num1 prompt '밑변을 입력하세요.'
+accept p_num2 prompt '높이를 입력하세요.'
+accept p_num3 prompt '빗변을 입력하세요.'
+
+begin
+    if power(&p_num1,2) + power(&p_num2,2) = power(&p_num3,2)
+    then
+            dbms_output.put_line('직각삼각형입니다.');
+    else
+            dbms_output.put_line('직각삼각형이 아닙니다.');
+    end if;
+end;
+/
