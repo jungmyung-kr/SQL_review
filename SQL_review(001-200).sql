@@ -2004,6 +2004,28 @@ end;
 set serveroutput on
 set verify off
 declare
+     v_name1   emp145.ename%type;
+     v_name2   emp145.ename%type; 
+begin
+  for  i  in  1 .. 3  loop
+     for  j  in  1 .. 3  loop 
+          select  ename  into v_name1  from emp145 where empno = i;
+          select  ename  into v_name2  from emp145 where empno = j;
+          if  i != j  then 
+             dbms_output.put_line(v_name1 ||', '|| v_name2);
+         end  if; 
+    end loop;
+ end loop;
+end;
+/
+
+
+--157. 수학식 구현하기 6 (조합)
+-- 수학식 조합을 PL/SQL로 구현해보시오.
+
+set serveroutput on
+set verify off
+declare
      v_name1   sample.fruit%type;
      v_name2   sample.fruit%type; 
 begin
