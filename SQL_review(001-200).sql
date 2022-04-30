@@ -2084,3 +2084,34 @@ begin
     dbms_output.put_line(v_medi);
 end;
 /
+
+
+--160. 기초 통계 구현하기 3 (최빈값)
+-- 여러 개의 숫자들을 입력받은 후 입력받은 숫자들 중에서 최빈값을 출력하는 PL/SQL문을 작성하시오.
+
+accept p_num1 prompt '데이터를 입력하세요.'
+declare
+    type array_t is varray(10) of varchar2(10);
+    v_array array_t := array_t(&p_num1);
+    v_cnt number(10);
+    v_tmp number(10);
+    v_max number(10) := 0;
+    v_tmp2 number(10);
+begin
+    for i in 1 .. v_array.count loop
+        v_cnt :=1;
+        for j in i+1 .. v_array.count loop
+            if v_array(i) = v_array(j) then
+                v_tmp := v_array(i);
+                v_cnt := v_cnt +1;
+            end if;
+        end loop;
+        
+        if v_max <=v_cnt then
+            v_max := v_cnt;
+            v_tmp2 := v_tmp;
+        end if;
+    end loop;
+dbms_output.put_line('최빈값은' || v_tmp2 || '이고' || v_max || '개입니다.');
+end;
+/
