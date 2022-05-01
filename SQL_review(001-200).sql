@@ -2115,3 +2115,39 @@ begin
 dbms_output.put_line('최빈값은' || v_tmp2 || '이고' || v_max || '개입니다.');
 end;
 /
+
+
+-- 161. 기초 통계 구현하기 4 (분산과 표준편차)
+-- 여러 개의 숫자들을 입력받은 후 입력받은 숫자들 중에서 최빈값을 출력하는 PL/SQL문을 작성하시오
+
+set serveroutput on
+set verify off
+accept p_arr prompt '숫자를 입력하세요.'
+
+declare
+    type arr_type is varray(10) of number(10);
+    v_num_arr arr_type := arr_type(&p_arr);
+    v_sum number(10,2) := 0;
+    v_cnt number(10,2) := 0;
+    v_avg number(10,2) := 0;
+    v_var number(10,2) := 0;
+    
+begin
+    for i in 1 .. v_num_arr.count loop
+        v_sum := v_sum + v_num_arr(i);
+        v_cnt := v_cnt + 1;
+    end loop;
+    
+    v_avg := v_sum / v_cnt;
+    
+    for i in 1 .. v_num_arr.count loop
+        v_var := v_var+ power(v_num_arr(i) - v_avg,2);
+    end loop;
+    
+    v_var :=  v_var / v_cnt ;
+    
+    dbms_output.put_line('분산값은: ' ||  v_var);
+    dbms_output.put_line('표준편차는: ' || round(sqrt(v_var)));
+    
+end;
+/
