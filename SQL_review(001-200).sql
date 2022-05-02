@@ -2118,7 +2118,7 @@ end;
 
 
 -- 161. 기초 통계 구현하기 4 (분산과 표준편차)
--- 여러 개의 숫자들을 입력받은 후 입력받은 숫자들 중에서 최빈값을 출력하는 PL/SQL문을 작성하시오
+-- 여러 개의 숫자들을 입력받은 후 입력받은 숫자들 중에서 최빈값을 출력하는 PL/SQL문을 작성하시오.
 
 set serveroutput on
 set verify off
@@ -2149,5 +2149,52 @@ begin
     dbms_output.put_line('분산값은: ' ||  v_var);
     dbms_output.put_line('표준편차는: ' || round(sqrt(v_var)));
     
+end;
+/
+
+
+-- 162. 기초 통계 구현하기 5 (공분산)
+-- 5명의 키와 체중 데이터를 각가 입력받은 후 공분산 값을 출력하는 PL/SQL문을 작성하시오.
+
+set serveroutput on
+set verify off
+accept p_arr1 prompt '키를 입력하세요.';
+accept p_arr2 prompt '체중을 입력하세요.';
+
+
+declare
+    type arr_type is varray(10) of number(10,2);
+    v_num_arr1    arr_type := arr_type(&p_arr1);
+    v_sum1   number(10,2)  := 0; 
+    v_avg1   number(10,2) := 0;
+
+    v_num_arr2    arr_type := arr_type(&p_arr2);
+    v_sum2   number(10,2)  := 0; 
+    v_avg2   number(10,2) := 0;
+
+    v_cnt    number(10,2);
+    v_var    number(10,2) := 0;
+    
+begin
+
+    v_cnt :=  v_num_arr1.count ;
+
+    for i in 1 .. v_num_arr1.count loop
+         v_sum1 :=  v_sum1  + v_num_arr1(i) ;
+    end loop;
+    
+    v_avg1 := v_sum1 / v_cnt;
+
+   for i in 1 .. v_num_arr2.count loop
+         v_sum2 :=  v_sum2  + v_num_arr2(i) ;
+    end loop;
+
+   v_avg2 := v_sum2 /  v_cnt; 
+
+   for i in 1 .. v_cnt loop
+       v_var:= v_var+  (v_num_arr1(i) - v_avg1 ) * ( v_num_arr2(i) - v_avg2)  / v_cnt;
+   end loop;
+
+   dbms_output.put_line('공분산 값: ' || v_var );
 end;
 /
