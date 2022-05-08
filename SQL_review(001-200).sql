@@ -2323,3 +2323,39 @@ round((v_2/v_loop),2));
    dbms_output.put_line('동전 둘다 뒷면이 나올 확률 : '|| round((v_1/v_loop),2));  
 end;
 /
+
+-- 166. 기초 통계 구현하기 9 (이항 분포)
+-- 동전 던지기의 이항 확률 분포를 PL/SQL문으로 구현해보시오. 
+
+create or replace function mybin
+(p_h in number)
+return number
+is
+    v_h number(10) := p_h;
+    v_sim number(10) := 100000;
+    v_cnt number(10) := 0;
+    v_cnt2 number(10) := 0;
+    v_res number(10,2); 
+
+begin
+     for n in 1..v_sim loop
+     v_cnt := 0;
+          for i in 1..10 loop
+               if dbms_random.value<0.5 then
+                      v_cnt := v_cnt+1;
+              end if;
+          end loop;
+          if v_cnt=v_h then
+                v_cnt2 := v_cnt2+1;
+ end if;
+    end loop;
+
+    v_res := v_cnt2/v_sim;
+
+ return v_res;
+end;
+/
+
+SELECT level-1 grade, mybin(level-1) 확률, lpad('■', mybin(level-1)*100, '■') "막대그래프"
+  FROM dual
+  CONNECT BY level < 12;
