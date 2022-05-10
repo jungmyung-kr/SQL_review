@@ -2403,3 +2403,19 @@ dbms_output.put_line(rpad(v_nm(i)||'~'||v_nm(i+1), 10, ' ')||lpad('■',trunc((v
   end loop;
 end;
 /
+
+
+--168. 알고리즘 문제 풀기 1 (삼각형 출력)
+
+set serveroutput on
+
+accept p_num prompt '숫자를 입력하세요.'
+declare 
+    v_cnt number(10) := 0;
+begin
+    while v_cnt < &p_num loop
+        v_cnt := v_cnt +1;
+        dbms_output.put_line(lpad('★', v_cnt,'★'));
+    end loop;
+end;
+/
