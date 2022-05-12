@@ -2433,3 +2433,27 @@ begin
    end loop;
 end;
 /
+
+
+--170.  PL/SQL로 알고리즘 문제 풀기 3 (피타고라스의 정리)
+-- 가로의 길이와 세로의길이, 빗변의 길이를 각가 입력받고 직각삼격형인지의 여부를 출력하는 PL/SQL문을 작성하시오.
+
+set serveroutput on
+set verify off
+accept p_num1 prompt '밑변의 길이를 입력하세요  :  ' 
+accept p_num2 prompt '높이를 입력하세요 :  '
+accept p_num3 prompt '빗변의 길이를 입력하세요 :  '
+
+declare 
+	v_num1 number(10) :=&p_num1;
+	v_num2 number(10) :=&p_num2;
+	v_num3 number(10) :=&p_num3;
+
+begin 
+   if (v_num1)**2 + (v_num2)**2=(v_num3)**2 then
+	dbms_output.put_line('직각 삼각형이 맞습니다');
+   else 
+	dbms_output.put_line('직각 삼각형이 아닙니다');
+   end if ;
+end;
+/
