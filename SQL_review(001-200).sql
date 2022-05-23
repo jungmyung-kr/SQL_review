@@ -2477,3 +2477,24 @@ end loop;
 	dbms_output.put_line(v_num2);
 end; 
 /
+
+
+--172. PL/SQL로 알고리즘 문제 풀기 5 (최대 공약수)
+--두 숫자를 입력받아 두 숫자의 최대 공약수를 출력하는 PL/SQL문을 구현해보시오.
+
+set verify off
+accept p_num1 prompt  '첫번째 숫자를 입력하세요.'
+accept p_num2 prompt  '두번째 숫자를 입력하세요.'
+declare
+      v_cnt   number(10);
+      v_mod  number(10);
+
+begin
+    for i in reverse   1 .. &p_num1 loop
+        v_mod := mod(&p_num1, i) + mod(&p_num2, i);
+        v_cnt := i ;
+        exit when v_mod = 0;
+   end loop;
+        dbms_output.put_line( v_cnt);
+ end;
+/
