@@ -19,3 +19,10 @@ FROM ANIMAL_INS;
 
 SELECT MIN(DATETIME)
 FROM ANIMAL_INS;
+
+
+-- 3. 동물 수 구하기
+-- 동물 보호소에 동물이 몇 마리 들어왔는지 조회하는 SQL문을 작성해주세요. 
+
+SELECT COUNT(ANIMAL_ID)
+FROM ANIMAL_INS;
