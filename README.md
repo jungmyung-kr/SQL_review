@@ -10,3 +10,6 @@ SQL 관련 문제 풀이
     * SELECT
     * SUM, MAX, MIN
     * GROUPBY
+    * IS NULL
+    * JOIN
+    * String, Date
