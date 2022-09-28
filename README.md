@@ -1,5 +1,5 @@
 # SQL_review
-SQL 관련 문제 풀이 
+SQL 관련 문제 풀이 (Oracle)
 
 * SQL Review 
   * 1~200제 문제 풀이
