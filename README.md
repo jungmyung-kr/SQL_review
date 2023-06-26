@@ -10,6 +10,6 @@ SQL 관련 문제 풀이 (Oracle)
     * SELECT
     * SUM, MAX, MIN 
     * GROUPBY
-    * IS NULL
+    * IS NULL 
     * JOIN
     * String, Date
